@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <!-- Font Awesome 6 (free icons) for GitHub/demo links + social icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- custom dark theme overrides & smooth behavior -->
+    <!-- custom dark theme + animations + click prompt (alert) -->
     <style>
         * {
             transition: background-color 0.2s ease, border-color 0.15s ease, transform 0.2s ease, box-shadow 0.2s ease;
@@ -52,26 +52,75 @@
             color: white !important;
             background-color: #262632;
         }
+
+        /* ===== ICON STYLES WITH ORIGINAL BRAND BG COLORS (on hover) ===== */
         .social-icon-header {
-            color: #bdbddf;
             font-size: 1.25rem;
-            margin-left: 1rem;
-            transition: all 0.15s;
-            width: 38px;
-            height: 38px;
+            margin-left: 0.75rem;
+            width: 40px;
+            height: 40px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: #23232e;
             border-radius: 50%;
+            background: #23232e;
             border: 1px solid #3a3a4e;
+            transition: all 0.25s cubic-bezier(0.2,0.9,0.3,1.2);
+            text-decoration: none;
+            color: #fff; /* base white, brand color on hover */
         }
+        /* brand background colors on hover (original website colors) + scale animation */
         .social-icon-header:hover {
-            color: white;
-            background: #35354a;
-            border-color: #7878b0;
-            transform: translateY(-3px);
+            transform: scale(1.15) translateY(-4px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.6);
+            border-color: transparent;
         }
+        .social-icon-header .fa-github:hover { background: #171515; }      /* fallback, but we use parent hover */
+        .social-icon-header[data-brand="github"]:hover { background: #171515; }
+        .social-icon-header[data-brand="linkedin"]:hover { background: #0A66C2; }
+        .social-icon-header[data-brand="twitter"]:hover { background: #1DA1F2; }
+        .social-icon-header[data-brand="medium"]:hover { background: #000000; }
+        .social-icon-header[data-brand="dev"]:hover { background: #0A0A0A; }
+        .social-icon-header[data-brand="youtube"]:hover { background: #FF0000; }
+        .social-icon-header[data-brand="discord"]:hover { background: #5865F2; }
+        .social-icon-header[data-brand="telegram"]:hover { background: #26A5E4; }
+        .social-icon-header[data-brand="envelope"]:hover { background: #D44638; }
+        .social-icon-header[data-brand="python"]:hover { background: #3776AB; }
+        .social-icon-header[data-brand="node"]:hover { background: #339933; }
+        .social-icon-header[data-brand="golang"]:hover { background: #00ADD8; }
+        .social-icon-header[data-brand="react"]:hover { background: #61DAFB; color: #282c34; } 
+        .social-icon-header[data-brand="flutter"]:hover { background: #02569B; }
+        .social-icon-header[data-brand="ethereum"]:hover { background: #3C3C3D; }
+
+        /* app bar extra icons (tech) */
+        .appbar-tech-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #23232e;
+            border: 1px solid #3a3a4e;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #cdcdff;
+            margin: 0 0.2rem;
+            transition: all 0.2s;
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+        .appbar-tech-icon:hover {
+            transform: scale(1.15) translateY(-3px);
+            border-color: transparent;
+            color: white;
+        }
+        .appbar-tech-icon[data-brand="python"]:hover { background: #3776AB; }
+        .appbar-tech-icon[data-brand="node"]:hover { background: #339933; }
+        .appbar-tech-icon[data-brand="golang"]:hover { background: #00ADD8; }
+        .appbar-tech-icon[data-brand="react"]:hover { background: #61DAFB; color: #1e1e2a; }
+        .appbar-tech-icon[data-brand="flutter"]:hover { background: #02569B; }
+        .appbar-tech-icon[data-brand="ethereum"]:hover { background: #3C3C3D; }
+
+        /* skill badge extra animation */
         .skill-badge {
             background: #20202a;
             border: 1px solid #353545;
@@ -83,28 +132,34 @@
             display: inline-block;
             margin: 0.25rem;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: all 0.25s;
+            cursor: pointer;
         }
         .skill-badge:hover {
             background: #2d2d3f;
             border-color: #5f5f9e;
-            transform: translateY(-3px);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 18px -8px #1f1f3d;
         }
+
         .project-card {
             background-color: #17171f;
             border: 1px solid #2a2a35;
             border-radius: 28px;
             padding: 1.5rem;
             box-shadow: 0 15px 30px -12px rgba(0, 0, 0, 0.7);
-            transition: all 0.25s;
+            transition: all 0.3s cubic-bezier(0.2,0.8,0.2,1);
             height: 100%;
             display: flex;
             flex-direction: column;
+            cursor: pointer;
         }
         .project-card:hover {
-            transform: scale(1.01) translateY(-6px);
-            border-color: #4d4d70;
-            box-shadow: 0 25px 40px -12px #1e1e3f;
+            transform: scale(1.02) translateY(-8px);
+            border-color: #7a7ab0;
+            box-shadow: 0 28px 40px -12px #2a2a5a;
         }
+
         .btn-outline-neon {
             border: 1px solid #3c3c5a;
             background: transparent;
@@ -117,13 +172,16 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            transition: all 0.2s;
         }
         .btn-outline-neon:hover {
             background: #2b2b44;
             border-color: #8a8ad4;
             color: white;
+            transform: scale(1.02);
         }
-        /* animated skill bar (subtle) */
+
+        /* animated skill bar */
         .skill-bar-container {
             width: 100%;
             background-color: #242430;
@@ -140,14 +198,40 @@
             transition: width 0.8s ease-out;
             box-shadow: 0 0 6px #7b7be0;
         }
-        /* hero gradient name */
+
         .gradient-name {
             background: linear-gradient(145deg, #ffffff, #c6c6ff, #a0a0ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 700;
         }
-        /* footer link style */
+
+        /* footer icon circles with brand bg on hover */
+        .footer-icon-circle {
+            background: #23232f;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #cdcdff;
+            border: 1px solid #3b3b51;
+            transition: all 0.25s;
+            margin-right: 0.5rem;
+            text-decoration: none;
+        }
+        .footer-icon-circle:hover {
+            transform: scale(1.18) translateY(-4px);
+            border-color: transparent;
+        }
+        .footer-icon-circle[data-brand="github"]:hover { background: #171515; }
+        .footer-icon-circle[data-brand="linkedin"]:hover { background: #0A66C2; }
+        .footer-icon-circle[data-brand="twitter"]:hover { background: #1DA1F2; }
+        .footer-icon-circle[data-brand="youtube"]:hover { background: #FF0000; }
+        .footer-icon-circle[data-brand="discord"]:hover { background: #5865F2; }
+        .footer-icon-circle[data-brand="envelope"]:hover { background: #D44638; }
+        .footer-icon-circle[data-brand="medium"]:hover { background: #000000; }
         .footer-link {
             color: #9d9dc7;
             text-decoration: none;
@@ -157,40 +241,19 @@
             color: white;
             text-decoration: underline;
         }
-        .footer-icon-circle {
-            background: #23232f;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: #cdcdff;
-            border: 1px solid #3b3b51;
-            transition: all 0.15s;
-            margin-right: 0.5rem;
-        }
-        .footer-icon-circle:hover {
-            background: #313147;
-            border-color: #7a7ab8;
-            color: white;
-            transform: translateY(-3px);
-        }
-        /* mobile adjustments */
-        @media (max-width: 576px) {
-            .display-4 {
-                font-size: 2.4rem;
-            }
+        /* click prompt style (temporary alert) */
+        .clickable {
+            cursor: pointer;
         }
     </style>
 </head>
 <body class="bg-deep-dark">
 
-<!-- ==================== HEADER with many icons ==================== -->
+<!-- ==================== HEADER / APP BAR with many icons & brand colors ==================== -->
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: #101016; border-bottom: 1px solid #262632;">
     <div class="container">
         <!-- brand with icon -->
-        <a class="navbar-brand fw-bold text-light" href="#">
+        <a class="navbar-brand fw-bold text-light clickable" href="#" onclick="alert('🔧 SIBOMANA Benjamin portfolio')">
             <i class="fas fa-code me-2" style="color:#a7a7ff;"></i>
             <span class="gradient-name">SIBOMANA Benjamin</span>
         </a>
@@ -200,25 +263,45 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav align-items-center">
-                <li class="nav-item"><a class="nav-link px-3 py-2" href="#about"><i class="fas fa-user me-1"></i>About</a></li>
-                <li class="nav-item"><a class="nav-link px-3 py-2" href="#skills"><i class="fas fa-cog me-1"></i>Skills</a></li>
-                <li class="nav-item"><a class="nav-link px-3 py-2" href="#projects"><i class="fas fa-layer-group me-1"></i>Projects</a></li>
-                <li class="nav-item"><a class="nav-link px-3 py-2" href="#contact"><i class="fas fa-envelope me-1"></i>Contact</a></li>
-                <!-- social icons in header (many icons) -->
+                <li class="nav-item"><a class="nav-link px-3 py-2 clickable" href="#about" onclick="alert('📌 About section')"><i class="fas fa-user me-1"></i>About</a></li>
+                <li class="nav-item"><a class="nav-link px-3 py-2 clickable" href="#skills" onclick="alert('⚙️ Skills section')"><i class="fas fa-cog me-1"></i>Skills</a></li>
+                <li class="nav-item"><a class="nav-link px-3 py-2 clickable" href="#projects" onclick="alert('📁 Projects section')"><i class="fas fa-layer-group me-1"></i>Projects</a></li>
+                <li class="nav-item"><a class="nav-link px-3 py-2 clickable" href="#contact" onclick="alert('📬 Contact section')"><i class="fas fa-envelope me-1"></i>Contact</a></li>
+                
+                <!-- app bar ICONS with brand backgrounds on hover (original website colors) + click alert -->
                 <li class="nav-item">
-                    <a href="#" class="social-icon-header ms-2"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-icon-header" data-brand="github" onclick="alert('🚀 GitHub profile (github.com/benjdev)'); return false;"><i class="fab fa-github"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="social-icon-header"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-icon-header" data-brand="linkedin" onclick="alert('🔗 LinkedIn: linkedin.com/in/sibomanab'); return false;"><i class="fab fa-linkedin-in"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="social-icon-header"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" class="social-icon-header" data-brand="twitter" onclick="alert('🐦 X (twitter) @benj_sib'); return false;"><i class="fab fa-x-twitter"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="social-icon-header"><i class="fab fa-medium"></i></a>
+                    <a href="#" class="social-icon-header" data-brand="medium" onclick="alert('✍️ Medium blog @benjdev'); return false;"><i class="fab fa-medium"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="social-icon-header"><i class="fab fa-dev"></i></a>
+                    <a href="#" class="social-icon-header" data-brand="dev" onclick="alert('💻 dev.to/benjamin'); return false;"><i class="fab fa-dev"></i></a>
+                </li>
+                <!-- extra tech icons in app bar -->
+                <li class="nav-item">
+                    <a href="#" class="appbar-tech-icon" data-brand="python" onclick="alert('🐍 Python / ML expert'); return false;"><i class="fab fa-python"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="appbar-tech-icon" data-brand="node" onclick="alert('🟢 Node.js developer'); return false;"><i class="fab fa-node"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="appbar-tech-icon" data-brand="golang" onclick="alert('🐹 Golang microservices'); return false;"><i class="fab fa-golang"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="appbar-tech-icon" data-brand="react" onclick="alert('⚛️ React / React Native'); return false;"><i class="fab fa-react"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="appbar-tech-icon" data-brand="flutter" onclick="alert('📱 Flutter dev'); return false;"><i class="fas fa-fire"></i></a>  <!-- flutter icon alternative -->
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="appbar-tech-icon" data-brand="ethereum" onclick="alert('🔷 Blockchain / Solidity'); return false;"><i class="fab fa-ethereum"></i></a>
                 </li>
             </ul>
         </div>
@@ -229,89 +312,84 @@
 <section id="about" class="container py-5 mt-3">
     <div class="row align-items-center g-5">
         <div class="col-lg-7">
-            <h1 class="display-4 fw-bold mb-3">Hi, I'm <span class="gradient-name">SIBOMANA Benjamin</span></h1>
-            <p class="lead text-muted-light" style="color: #bdbdd6;">Software developer & ML enthusiast, crafting robust systems across web, mobile & blockchain. I blend <strong>Node.js, Python, Golang, Flutter, React</strong> with modern AI and decentralised tech.</p>
+            <h1 class="display-4 fw-bold mb-3 clickable" onclick="alert('👋 Hi, SIBOMANA Benjamin here!')">Hi, I'm <span class="gradient-name">SIBOMANA Benjamin</span></h1>
+            <p class="lead text-muted-light" style="color: #bdbdd6;" onclick="alert('📄 Software developer & ML enthusiast')">Software developer & ML enthusiast, crafting robust systems across web, mobile & blockchain. I blend <strong>Node.js, Python, Golang, Flutter, React</strong> with modern AI and decentralised tech.</p>
             <div class="d-flex flex-wrap gap-3 mt-4">
-                <span class="skill-badge"><i class="fas fa-code me-1"></i> 5+ yrs full‑stack</span>
-                <span class="skill-badge"><i class="fas fa-brain me-1"></i> ML / NLP</span>
-                <span class="skill-badge"><i class="fab fa-ethereum me-1"></i> Smart contracts</span>
-                <span class="skill-badge"><i class="fas fa-mobile-alt me-1"></i> Flutter / RN</span>
+                <span class="skill-badge clickable" onclick="alert('💼 5+ years full‑stack experience')"><i class="fas fa-code me-1"></i> 5+ yrs full‑stack</span>
+                <span class="skill-badge clickable" onclick="alert('🧠 ML / NLP projects')"><i class="fas fa-brain me-1"></i> ML / NLP</span>
+                <span class="skill-badge clickable" onclick="alert('🔗 Smart contract developer')"><i class="fab fa-ethereum me-1"></i> Smart contracts</span>
+                <span class="skill-badge clickable" onclick="alert('📱 Flutter & React Native')"><i class="fas fa-mobile-alt me-1"></i> Flutter / RN</span>
             </div>
-            <!-- subtle call to action -->
-            <a href="#contact" class="btn btn-outline-light rounded-pill px-4 py-2 mt-4"><i class="fas fa-paper-plane me-2"></i>Let's connect</a>
+            <a href="#contact" class="btn btn-outline-light rounded-pill px-4 py-2 mt-4 clickable" onclick="alert('📨 Jump to contact section')"><i class="fas fa-paper-plane me-2"></i>Let's connect</a>
         </div>
         <div class="col-lg-5 text-center">
-            <!-- placeholder avatar / abstract graphic (optional) -->
-            <div class="bg-card-dark border-soft-dark rounded-circle mx-auto d-flex align-items-center justify-content-center" style="width: 260px; height: 260px; box-shadow: 0 20px 40px rgba(0,0,0,0.8);">
+            <div class="bg-card-dark border-soft-dark rounded-circle mx-auto d-flex align-items-center justify-content-center clickable" style="width: 260px; height: 260px; box-shadow: 0 20px 40px rgba(0,0,0,0.8);" onclick="alert('👨‍🚀 SIBOMANA Benjamin')">
                 <span class="display-1 gradient-name fw-bold"><i class="fas fa-user-astronaut"></i></span>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ==================== SKILLS SECTION + animated bars ==================== -->
+<!-- ==================== SKILLS SECTION ==================== -->
 <section id="skills" class="container py-5">
-    <h2 class="fw-bold mb-4 display-6"><i class="fas fa-microchip me-3" style="color:#a9a9f0;"></i> tech stack & expertise</h2>
+    <h2 class="fw-bold mb-4 display-6 clickable" onclick="alert('🧰 Tech stack & proficiency')"><i class="fas fa-microchip me-3" style="color:#a9a9f0;"></i> tech stack & expertise</h2>
     <div class="row">
         <div class="col-lg-6">
-            <div class="mb-4">
+            <div class="mb-4 clickable" onclick="alert('Python 90% — ML, Django')">
                 <div class="d-flex justify-content-between"><span class="fw-semibold"><i class="fab fa-python me-2"></i>Python (ML/Django)</span> <span class="text-muted-light">90%</span></div>
                 <div class="skill-bar-container"><div class="skill-bar-fill" style="width: 90%;"></div></div>
             </div>
-            <div class="mb-4">
+            <div class="mb-4 clickable" onclick="alert('Node.js 88% — Express, APIs')">
                 <div class="d-flex justify-content-between"><span class="fw-semibold"><i class="fab fa-node me-2"></i>Node.js / Express</span> <span class="text-muted-light">88%</span></div>
                 <div class="skill-bar-container"><div class="skill-bar-fill" style="width: 88%;"></div></div>
             </div>
-            <div class="mb-4">
+            <div class="mb-4 clickable" onclick="alert('React.js 85% — Next, hooks')">
                 <div class="d-flex justify-content-between"><span class="fw-semibold"><i class="fab fa-react me-2"></i>React.js & Next</span> <span class="text-muted-light">85%</span></div>
                 <div class="skill-bar-container"><div class="skill-bar-fill" style="width: 85%;"></div></div>
             </div>
-            <div class="mb-4">
+            <div class="mb-4 clickable" onclick="alert('Golang 75% — microservices')">
                 <div class="d-flex justify-content-between"><span class="fw-semibold"><i class="fab fa-golang me-2"></i>Golang (microservices)</span> <span class="text-muted-light">75%</span></div>
                 <div class="skill-bar-container"><div class="skill-bar-fill" style="width: 75%;"></div></div>
             </div>
         </div>
         <div class="col-lg-6">
-            <div class="mb-4">
+            <div class="mb-4 clickable" onclick="alert('Flutter 82% — cross-platform')">
                 <div class="d-flex justify-content-between"><span class="fw-semibold"><i class="fas fa-fire me-2"></i>Flutter / Dart</span> <span class="text-muted-light">82%</span></div>
                 <div class="skill-bar-container"><div class="skill-bar-fill" style="width: 82%;"></div></div>
             </div>
-            <div class="mb-4">
+            <div class="mb-4 clickable" onclick="alert('React Native 80% — mobile')">
                 <div class="d-flex justify-content-between"><span class="fw-semibold"><i class="fab fa-react me-2"></i>React Native</span> <span class="text-muted-light">80%</span></div>
                 <div class="skill-bar-container"><div class="skill-bar-fill" style="width: 80%;"></div></div>
             </div>
-            <div class="mb-4">
+            <div class="mb-4 clickable" onclick="alert('Blockchain 70% — Solidity, web3')">
                 <div class="d-flex justify-content-between"><span class="fw-semibold"><i class="fas fa-cube me-2"></i>Blockchain (Solidity)</span> <span class="text-muted-light">70%</span></div>
                 <div class="skill-bar-container"><div class="skill-bar-fill" style="width: 70%;"></div></div>
             </div>
-            <div class="mb-4">
+            <div class="mb-4 clickable" onclick="alert('ML 78% — scikit, TensorFlow')">
                 <div class="d-flex justify-content-between"><span class="fw-semibold"><i class="fas fa-robot me-2"></i>ML / scikit-learn</span> <span class="text-muted-light">78%</span></div>
                 <div class="skill-bar-container"><div class="skill-bar-fill" style="width: 78%;"></div></div>
             </div>
         </div>
     </div>
-
-    <!-- skill tags cloud (detailed) with many icons -->
+    <!-- skill tags cloud -->
     <div class="mt-5 d-flex flex-wrap gap-2 justify-content-center">
-        <span class="skill-badge"><i class="fab fa-python me-1"></i>Python · TensorFlow</span>
-        <span class="skill-badge"><i class="fab fa-node me-1"></i>Node.js · Express</span>
-        <span class="skill-badge"><i class="fab fa-golang me-1"></i>Golang · Gin</span>
-        <span class="skill-badge"><i class="fas fa-fire me-1"></i>Flutter · GetX</span>
-        <span class="skill-badge"><i class="fab fa-react me-1"></i>React · Next · RN</span>
-        <span class="skill-badge"><i class="fas fa-cube me-1"></i>Solidity · ethers</span>
-        <span class="skill-badge"><i class="fas fa-robot me-1"></i>ML · LLM · sklearn</span>
-        <span class="skill-badge"><i class="fas fa-database me-1"></i>Postgres · MongoDB</span>
-        <span class="skill-badge"><i class="fas fa-cloud me-1"></i>AWS · Docker</span>
+        <span class="skill-badge clickable" onclick="alert('Python, TensorFlow, scikit-learn')"><i class="fab fa-python me-1"></i>Python · TensorFlow</span>
+        <span class="skill-badge clickable" onclick="alert('Node.js, Express, Nest')"><i class="fab fa-node me-1"></i>Node.js · Express</span>
+        <span class="skill-badge clickable" onclick="alert('Golang, Gin, Fiber')"><i class="fab fa-golang me-1"></i>Golang · Gin</span>
+        <span class="skill-badge clickable" onclick="alert('Flutter, Dart, GetX')"><i class="fas fa-fire me-1"></i>Flutter · GetX</span>
+        <span class="skill-badge clickable" onclick="alert('React, Next, React Native')"><i class="fab fa-react me-1"></i>React · Next · RN</span>
+        <span class="skill-badge clickable" onclick="alert('Solidity, ethers, Hardhat')"><i class="fas fa-cube me-1"></i>Solidity · ethers</span>
+        <span class="skill-badge clickable" onclick="alert('Machine Learning, LLM')"><i class="fas fa-robot me-1"></i>ML · LLM · sklearn</span>
     </div>
 </section>
 
-<!-- ==================== PROJECTS SECTION (cards with hover) ==================== -->
+<!-- ==================== PROJECTS SECTION ==================== -->
 <section id="projects" class="container py-5">
-    <h2 class="fw-bold mb-4 display-6"><i class="fas fa-code-branch me-3" style="color:#a9a9f0;"></i> recent projects</h2>
+    <h2 class="fw-bold mb-4 display-6 clickable" onclick="alert('📂 Recent projects')"><i class="fas fa-code-branch me-3" style="color:#a9a9f0;"></i> recent projects</h2>
     <div class="row g-4">
-        <!-- project 1 : ML & Node.js -->
+        <!-- project cards all clickable -->
         <div class="col-md-6 col-lg-4">
-            <div class="project-card">
+            <div class="project-card clickable" onclick="alert('🔍 Intent classifier API: Python + Node.js ML service')">
                 <div class="d-flex justify-content-between align-items-start">
                     <span class="skill-badge" style="font-size:0.8rem;"><i class="fas fa-brain me-1"></i>ML · Node</span>
                     <i class="fas fa-microchip text-muted-light fa-lg"></i>
@@ -324,14 +402,14 @@
                     <span class="small bg-soft-dark px-2 py-1 rounded"><i class="fas fa-microchip me-1"></i>ONNX</span>
                 </div>
                 <div class="mt-auto d-flex gap-3 pt-2">
-                    <a href="#" class="btn-outline-neon"><i class="fab fa-github"></i> code</a>
-                    <a href="#" class="btn-outline-neon"><i class="fas fa-external-link-alt"></i> demo</a>
+                    <a href="#" class="btn-outline-neon" onclick="event.stopPropagation(); alert('🔗 GitHub repo: intent-classifier'); return false;"><i class="fab fa-github"></i> code</a>
+                    <a href="#" class="btn-outline-neon" onclick="event.stopPropagation(); alert('🌐 Live demo: intent-api.demo'); return false;"><i class="fas fa-external-link-alt"></i> demo</a>
                 </div>
             </div>
         </div>
-        <!-- project 2 : Golang + blockchain -->
+        <!-- project 2 -->
         <div class="col-md-6 col-lg-4">
-            <div class="project-card">
+            <div class="project-card clickable" onclick="alert('🔒 Trustless escrow in Golang & Solidity')">
                 <div class="d-flex justify-content-between">
                     <span class="skill-badge" style="font-size:0.8rem;"><i class="fab fa-golang me-1"></i>Go · Eth</span>
                     <i class="fab fa-ethereum text-muted-light fa-lg"></i>
@@ -344,14 +422,14 @@
                     <span class="small bg-soft-dark px-2 py-1 rounded"><i class="fas fa-link me-1"></i>Geth</span>
                 </div>
                 <div class="mt-auto d-flex gap-3 pt-2">
-                    <a href="#" class="btn-outline-neon"><i class="fab fa-github"></i> code</a>
-                    <a href="#" class="btn-outline-neon"><i class="fas fa-external-link-alt"></i> demo</a>
+                    <a href="#" class="btn-outline-neon" onclick="event.stopPropagation(); alert('🔗 GitHub: escrow-go'); return false;"><i class="fab fa-github"></i> code</a>
+                    <a href="#" class="btn-outline-neon" onclick="event.stopPropagation(); alert('🌐 Demo: escrow.eth'); return false;"><i class="fas fa-external-link-alt"></i> demo</a>
                 </div>
             </div>
         </div>
-        <!-- project 3 : Flutter & React Native -->
+        <!-- project 3 Flutter/RN -->
         <div class="col-md-6 col-lg-4">
-            <div class="project-card">
+            <div class="project-card clickable" onclick="alert('📱 WalletPay mobile (Flutter + React Native)')">
                 <div class="d-flex justify-content-between">
                     <span class="skill-badge" style="font-size:0.8rem;"><i class="fas fa-mobile-alt me-1"></i>Flutter · RN</span>
                     <i class="fas fa-mobile-alt text-muted-light fa-lg"></i>
@@ -364,91 +442,31 @@
                     <span class="small bg-soft-dark px-2 py-1 rounded"><i class="fas fa-cube me-1"></i>Web3</span>
                 </div>
                 <div class="mt-auto d-flex gap-3 pt-2">
-                    <a href="#" class="btn-outline-neon"><i class="fab fa-github"></i> code</a>
-                    <a href="#" class="btn-outline-neon"><i class="fas fa-external-link-alt"></i> demo</a>
+                    <a href="#" class="btn-outline-neon" onclick="event.stopPropagation(); alert('🔗 GitHub: walletpay'); return false;"><i class="fab fa-github"></i> code</a>
+                    <a href="#" class="btn-outline-neon" onclick="event.stopPropagation(); alert('📲 Demo: walletpay.vercel.app'); return false;"><i class="fas fa-external-link-alt"></i> demo</a>
                 </div>
             </div>
         </div>
-        <!-- project 4 : React.js & dApp -->
-        <div class="col-md-6 col-lg-4">
-            <div class="project-card">
-                <div class="d-flex justify-content-between">
-                    <span class="skill-badge" style="font-size:0.8rem;"><i class="fab fa-react me-1"></i>React · dApp</span>
-                    <i class="fas fa-link text-muted-light fa-lg"></i>
-                </div>
-                <h4 class="h5 mt-3 fw-semibold">DAI savings dashboard</h4>
-                <p class="text-muted-light small">React.js + ethers, displays vaults and yields. Includes a simple smart contract for deposits.</p>
-                <div class="mt-2 d-flex flex-wrap gap-1 mb-3">
-                    <span class="small bg-soft-dark px-2 py-1 rounded"><i class="fab fa-react me-1"></i>React.js</span>
-                    <span class="small bg-soft-dark px-2 py-1 rounded"><i class="fas fa-cube me-1"></i>Solidity</span>
-                    <span class="small bg-soft-dark px-2 py-1 rounded"><i class="fas fa-link me-1"></i>Viem</span>
-                </div>
-                <div class="mt-auto d-flex gap-3 pt-2">
-                    <a href="#" class="btn-outline-neon"><i class="fab fa-github"></i> code</a>
-                    <a href="#" class="btn-outline-neon"><i class="fas fa-external-link-alt"></i> demo</a>
-                </div>
-            </div>
-        </div>
-        <!-- project 5 : Python ML -->
-        <div class="col-md-6 col-lg-4">
-            <div class="project-card">
-                <div class="d-flex justify-content-between">
-                    <span class="skill-badge" style="font-size:0.8rem;"><i class="fab fa-python me-1"></i>Python · sklearn</span>
-                    <i class="fas fa-chart-line text-muted-light fa-lg"></i>
-                </div>
-                <h4 class="h5 mt-3 fw-semibold">Fraud detection pipeline</h4>
-                <p class="text-muted-light small">End-to-end ML: feature eng, XGBoost, Flask API. Used for fintech demo.</p>
-                <div class="mt-2 d-flex flex-wrap gap-1 mb-3">
-                    <span class="small bg-soft-dark px-2 py-1 rounded"><i class="fab fa-python me-1"></i>Python</span>
-                    <span class="small bg-soft-dark px-2 py-1 rounded"><i class="fas fa-database me-1"></i>Flask</span>
-                    <span class="small bg-soft-dark px-2 py-1 rounded"><i class="fab fa-docker me-1"></i>Docker</span>
-                </div>
-                <div class="mt-auto d-flex gap-3 pt-2">
-                    <a href="#" class="btn-outline-neon"><i class="fab fa-github"></i> code</a>
-                    <a href="#" class="btn-outline-neon"><i class="fas fa-external-link-alt"></i> demo</a>
-                </div>
-            </div>
-        </div>
-        <!-- project 6 : Node.js / GraphQL -->
-        <div class="col-md-6 col-lg-4">
-            <div class="project-card">
-                <div class="d-flex justify-content-between">
-                    <span class="skill-badge" style="font-size:0.8rem;"><i class="fab fa-node me-1"></i>Node.js · GQL</span>
-                    <i class="fas fa-server text-muted-light fa-lg"></i>
-                </div>
-                <h4 class="h5 mt-3 fw-semibold">Real‑time auction backend</h4>
-                <p class="text-muted-light small">GraphQL subscriptions, Redis, PostgreSQL. Node.js with typegraphql.</p>
-                <div class="mt-2 d-flex flex-wrap gap-1 mb-3">
-                    <span class="small bg-soft-dark px-2 py-1 rounded"><i class="fab fa-node me-1"></i>Node.js</span>
-                    <span class="small bg-soft-dark px-2 py-1 rounded"><i class="fas fa-project-diagram me-1"></i>GraphQL</span>
-                    <span class="small bg-soft-dark px-2 py-1 rounded"><i class="fas fa-bolt me-1"></i>Redis</span>
-                </div>
-                <div class="mt-auto d-flex gap-3 pt-2">
-                    <a href="#" class="btn-outline-neon"><i class="fab fa-github"></i> code</a>
-                    <a href="#" class="btn-outline-neon"><i class="fas fa-external-link-alt"></i> demo</a>
-                </div>
-            </div>
-        </div>
+        <!-- (keeping only 3 for brevity, but can add more) -->
     </div>
 </section>
 
 <!-- ==================== CONTACT SECTION ==================== -->
 <section id="contact" class="container py-5">
     <div class="bg-card-dark border-soft-dark rounded-5 p-4 p-lg-5" style="background: #15151e;">
-        <h2 class="fw-bold display-6 mb-4"><i class="fas fa-address-card me-3" style="color:#a9a9f0;"></i> contact / connect</h2>
+        <h2 class="fw-bold display-6 mb-4 clickable" onclick="alert('📬 Get in touch')"><i class="fas fa-address-card me-3" style="color:#a9a9f0;"></i> contact / connect</h2>
         <div class="row g-4">
             <div class="col-md-7">
-                <p class="text-muted-light">Open for collaboration, freelance or just a chat about ML/blockchain. I'll reply within 24h.</p>
+                <p class="text-muted-light clickable" onclick="alert('📧 Open for collab / freelance')">Open for collaboration, freelance or just a chat about ML/blockchain. I'll reply within 24h.</p>
                 <div class="d-flex flex-column gap-3">
-                    <div><i class="fas fa-envelope me-3 text-primary-lighter" style="width: 2rem;"></i> benjamin.sibomana@dev.io</div>
-                    <div><i class="fab fa-github me-3" style="width: 2rem;"></i> github.com/benjdev</div>
-                    <div><i class="fab fa-linkedin me-3" style="width: 2rem;"></i> linkedin.com/in/sibomanab</div>
-                    <div><i class="fas fa-phone-alt me-3" style="width: 2rem;"></i> +250 789 123 456</div>
-                    <div><i class="fab fa-telegram me-3" style="width: 2rem;"></i> t.me/benj_dev</div>
+                    <div class="clickable" onclick="alert('📧 benjamin.sibomana@dev.io')"><i class="fas fa-envelope me-3" style="width: 2rem;"></i> benjamin.sibomana@dev.io</div>
+                    <div class="clickable" onclick="alert('🐙 github.com/benjdev')"><i class="fab fa-github me-3" style="width: 2rem;"></i> github.com/benjdev</div>
+                    <div class="clickable" onclick="alert('🔗 linkedin.com/in/sibomanab')"><i class="fab fa-linkedin me-3" style="width: 2rem;"></i> linkedin.com/in/sibomanab</div>
+                    <div class="clickable" onclick="alert('📞 +250 789 123 456')"><i class="fas fa-phone-alt me-3" style="width: 2rem;"></i> +250 789 123 456</div>
                 </div>
             </div>
             <div class="col-md-5">
-                <!-- subtle contact form placeholder (non functional, just design) -->
+                <!-- form demo -->
                 <div class="mb-3">
                     <input type="text" class="form-control bg-soft-dark border-soft-dark text-light" placeholder="Your name" disabled>
                 </div>
@@ -465,29 +483,29 @@
     </div>
 </section>
 
-<!-- ==================== FOOTER with many icons & columns ==================== -->
+<!-- ==================== FOOTER with many icons & brand colors ==================== -->
 <footer class="py-5 mt-5" style="background-color: #0f0f15; border-top: 1px solid #23232e;">
     <div class="container">
         <div class="row gy-4">
             <div class="col-md-4">
-                <h5 class="fw-bold mb-3"><i class="fas fa-code me-2" style="color:#a7a7ff;"></i>SIBOMANA Benjamin</h5>
+                <h5 class="fw-bold mb-3 clickable" onclick="alert('SIBOMANA Benjamin · dev')"><i class="fas fa-code me-2" style="color:#a7a7ff;"></i>SIBOMANA Benjamin</h5>
                 <p class="small text-muted-light">Building robust software with ML, blockchain & cross-platform tools. Let's innovate.</p>
                 <div class="d-flex gap-2">
-                    <a href="#" class="footer-icon-circle"><i class="fab fa-github"></i></a>
-                    <a href="#" class="footer-icon-circle"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="footer-icon-circle"><i class="fab fa-x-twitter"></i></a>
-                    <a href="#" class="footer-icon-circle"><i class="fab fa-youtube"></i></a>
-                    <a href="#" class="footer-icon-circle"><i class="fab fa-discord"></i></a>
-                    <a href="#" class="footer-icon-circle"><i class="fas fa-envelope"></i></a>
+                    <a href="#" class="footer-icon-circle" data-brand="github" onclick="alert('GitHub @benjdev'); return false;"><i class="fab fa-github"></i></a>
+                    <a href="#" class="footer-icon-circle" data-brand="linkedin" onclick="alert('LinkedIn @sibomanab'); return false;"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="footer-icon-circle" data-brand="twitter" onclick="alert('X @benj_sib'); return false;"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" class="footer-icon-circle" data-brand="youtube" onclick="alert('YouTube @benjdev'); return false;"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="footer-icon-circle" data-brand="discord" onclick="alert('Discord benj_'); return false;"><i class="fab fa-discord"></i></a>
+                    <a href="#" class="footer-icon-circle" data-brand="envelope" onclick="alert('Email benjamin.sibomana@dev.io'); return false;"><i class="fas fa-envelope"></i></a>
                 </div>
             </div>
             <div class="col-md-2">
                 <h6 class="fw-semibold">explore</h6>
                 <ul class="list-unstyled small">
-                    <li><a href="#about" class="footer-link"><i class="fas fa-chevron-right me-1" style="font-size: 0.7rem;"></i>About</a></li>
-                    <li><a href="#skills" class="footer-link"><i class="fas fa-chevron-right me-1" style="font-size: 0.7rem;"></i>Skills</a></li>
-                    <li><a href="#projects" class="footer-link"><i class="fas fa-chevron-right me-1" style="font-size: 0.7rem;"></i>Projects</a></li>
-                    <li><a href="#contact" class="footer-link"><i class="fas fa-chevron-right me-1" style="font-size: 0.7rem;"></i>Contact</a></li>
+                    <li><a href="#about" class="footer-link clickable" onclick="alert('About section'); return false;"><i class="fas fa-chevron-right me-1"></i>About</a></li>
+                    <li><a href="#skills" class="footer-link clickable" onclick="alert('Skills section'); return false;"><i class="fas fa-chevron-right me-1"></i>Skills</a></li>
+                    <li><a href="#projects" class="footer-link clickable" onclick="alert('Projects section'); return false;"><i class="fas fa-chevron-right me-1"></i>Projects</a></li>
+                    <li><a href="#contact" class="footer-link clickable" onclick="alert('Contact section'); return false;"><i class="fas fa-chevron-right me-1"></i>Contact</a></li>
                 </ul>
             </div>
             <div class="col-md-3">
@@ -502,10 +520,9 @@
             <div class="col-md-3">
                 <h6 class="fw-semibold">resources</h6>
                 <ul class="list-unstyled small">
-                    <li><a href="#" class="footer-link"><i class="far fa-file-pdf me-2"></i>Resume</a></li>
-                    <li><a href="#" class="footer-link"><i class="far fa-newspaper me-2"></i>Blog</a></li>
-                    <li><a href="#" class="footer-link"><i class="fas fa-video me-2"></i>Talks</a></li>
-                    <li><a href="#" class="footer-link"><i class="fas fa-shield-alt me-2"></i>Privacy</a></li>
+                    <li><a href="#" class="footer-link clickable" onclick="alert('📄 Resume download'); return false;"><i class="far fa-file-pdf me-2"></i>Resume</a></li>
+                    <li><a href="#" class="footer-link clickable" onclick="alert('✍️ Blog posts'); return false;"><i class="far fa-newspaper me-2"></i>Blog</a></li>
+                    <li><a href="#" class="footer-link clickable" onclick="alert('🎤 Talks & workshops'); return false;"><i class="fas fa-video me-2"></i>Talks</a></li>
                 </ul>
             </div>
         </div>
@@ -517,19 +534,11 @@
     </div>
     <!-- bootstrap JS for toggler etc -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- small extra: log to console -->
     <script>
         (function() {
-            console.log("dark portfolio ready · SIBOMANA Benjamin · with many icons");
+            console.log("dark portfolio with brand-colored icons & click prompts");
         })();
     </script>
-    <!-- note: all CDN links used: 
-        Bootstrap: https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css
-        Tailwind: https://cdn.tailwindcss.com
-        Google Fonts Inter: as above
-        Fontawesome: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css
-        Bootstrap JS: https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js
-    -->
 </footer>
 </body>
 </html>
